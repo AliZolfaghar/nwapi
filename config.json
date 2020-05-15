@@ -1,0 +1,13 @@
+{
+    "dev-server-ip" : "192.168.0.99" , 
+    "httpPort" : "80",
+    "httpsPort": "443",
+    
+    "jwt_secret":"MySuperSecret",
+    "token_time":60000 , 
+    "apikey":"00000000-0000-0000-0000-000000000000",
+    
+    "redis_host":"192.168.0.101" , 
+    "redis_port":"6379" , 
+    "redis_pass" : "MyRedisPassword" 
+}
