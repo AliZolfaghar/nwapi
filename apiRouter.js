@@ -1,7 +1,9 @@
 var apiversion = '1.1.1';
 var fs = require('fs');
 var config = JSON.parse(fs.readFileSync('./config.json'));
-var db = require('./knex_mssql');
+// var db = require('./knex_mssql');
+var db = require('./knex_sqlite');
+
 // var path = require('path');
 // var log = require('./azlog');
 // var token = require('./token');
@@ -10,16 +12,17 @@ var db = require('./knex_mssql');
 var express = require('express');
 var router = express.Router();
 
-router.get('/api/', async (req, res) => {
+// test route
+router.get('/test', async (req, res) => {
     res.json({
         success: true,
         message: 'api is up and running'
     });
 });
 
-router.get('/api/testdb', async (req, res) => {
+router.get('/testdb', async (req, res) => {
     // USE QUERY 
-    var sql = "select top 1 * from information_schema.tables" // sql to execute SP 
+    var sql = "select username from tbl_users" // sql to execute SP 
     var params = {}
     try {
         res.json(await db.raw(sql, params));
@@ -39,88 +42,43 @@ router.get('/api/testdb', async (req, res) => {
 
 // other routes goes here 
 /*
-___  _  _ ___  _    _ ____    ____ ____ _  _ ___ ____ ____ 
-|__] |  | |__] |    | |       |__/ |  | |  |  |  |___ [__  
-|    |__| |__] |___ | |___    |  \ |__| |__|  |  |___ ___] 
+
+██████╗ ██╗   ██╗██████╗ ██╗     ██╗ ██████╗    ██████╗  ██████╗ ██╗   ██╗████████╗███████╗███████╗
+██╔══██╗██║   ██║██╔══██╗██║     ██║██╔════╝    ██╔══██╗██╔═══██╗██║   ██║╚══██╔══╝██╔════╝██╔════╝
+██████╔╝██║   ██║██████╔╝██║     ██║██║         ██████╔╝██║   ██║██║   ██║   ██║   █████╗  ███████╗
+██╔═══╝ ██║   ██║██╔══██╗██║     ██║██║         ██╔══██╗██║   ██║██║   ██║   ██║   ██╔══╝  ╚════██║
+██║     ╚██████╔╝██████╔╝███████╗██║╚██████╗    ██║  ██║╚██████╔╝╚██████╔╝   ██║   ███████╗███████║
+╚═╝      ╚═════╝ ╚═════╝ ╚══════╝╚═╝ ╚═════╝    ╚═╝  ╚═╝ ╚═════╝  ╚═════╝    ╚═╝   ╚══════╝╚══════╝ 
                                                            
 */
 
-// add other public router 
-// router.use(require('./routes/is.router'));
-// router.use(require('./routes/edalat.router'));
 
-
-// call other private  api like this 
+// call other private api (web-service) like this 
 // var r = require('request');
-// router.get('/api/se/portfoy',function(request,response,next){
+// router.get('/api/se/portfoy',function(request,res,next){
 //   var url = '/www/data/portfoy.json'
-//   var url = 'http://edalatapp.ipo.org//api/api.aspx?api=GetCoAppDashBoard1' ; 
+//   var url = 'http://edalatapp.ipo.org/api/api.aspx?api=GetCoAppDashBoard1' ; 
 //   r.get(url,function(err,res,body){
-//     response.send(body);
+//     res.send(body);
 //   });
 // });
 
 
-
-////////////////////////////////////////////////////////////////////  
-// validate apikey , all api request need an api key except /api.test
-////////////////////////////////////////////////////////////////////
-var apikeys = JSON.parse(fs.readFileSync('./apikeys.json'));
-
-// TODO : apikey must read from : field : apikey 
-// [X] form-body 
-// [X] json post 
-// [] header 
-// [] cookie
-
-
-/*
-
- █████╗ ██████╗ ██╗      ██╗  ██╗███████╗██╗   ██╗    ██████╗ ██████╗  ██████╗ ████████╗███████╗ ██████╗████████╗
-██╔══██╗██╔══██╗██║      ██║ ██╔╝██╔════╝╚██╗ ██╔╝    ██╔══██╗██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝
-███████║██████╔╝██║█████╗█████╔╝ █████╗   ╚████╔╝     ██████╔╝██████╔╝██║   ██║   ██║   █████╗  ██║        ██║   
-██╔══██║██╔═══╝ ██║╚════╝██╔═██╗ ██╔══╝    ╚██╔╝      ██╔═══╝ ██╔══██╗██║   ██║   ██║   ██╔══╝  ██║        ██║   
-██║  ██║██║     ██║      ██║  ██╗███████╗   ██║       ██║     ██║  ██║╚██████╔╝   ██║   ███████╗╚██████╗   ██║   
-╚═╝  ╚═╝╚═╝     ╚═╝      ╚═╝  ╚═╝╚══════╝   ╚═╝       ╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝ ╚═════╝   ╚═╝   
-
-*/
-router.route('*').all(function (request, response, next) {
-    console.log('apikey is : ' + request.body.apikey);
-    if (apikeys.hasOwnProperty(request.body.apikey)) {
-        console.log('api-key used : ', apikeys[request.body.apikey]);
-        if (request.body.apikey == '4EA69F21-169D-4A55-AEC4-5AA320D7F40B') {
-            // response.json(testValue);
-            response.json({
-                success: true,
-                owner: 'test-key'
-            });
-
-        } else {
-            request.apiOwner = apikeys[request.body.apikey];
-            next();
-        }
-    } else {
-        console.log('invalid api-key ', request.body.apikey);
-        response.json({
-            success: false,
-            error: 'invalid api-key!'
-        });
-    }
-});
-
-
-// the other request require api-key 
 
 // todo you can use jwt to secure the routes 
 var jwt = require('jsonwebtoken');
 var jwt_secret = '(9<s)NR6vc^2]-x[';
 
 
-// login 
-router.post('/api/login',async(request,response)=>{    
-    // console.log(request.body);
+// /api/login 
+router.post('/login',async(req,res)=>{   
+    console.log('/api/login is triggerd') 
+    if(!req.body.username || !req.body.password){
+        return res.status(401).json({success:false , message:'no username or password'});
+    }
+    // console.log(req.body);
     try {
-        var _user = await knex('tbl_users').where('username',request.body.username).andWhere('password',request.body.password) ; 
+        var _user = await db('tbl_users').where('username',req.body.username).andWhere('password',req.body.password) ; 
         if(_user[0]){
             
             var payload = {
@@ -129,39 +87,34 @@ router.post('/api/login',async(request,response)=>{
                 realname : _user[0].realname 
             } ; 
 
-            var expiresIn = request.body.remember?'356d':'24h'; 
-            // console.log(expiresIn);
-
-            // console.log(payload);
-            // login
-            var login_token = jwt.sign(payload, jwt_secret, {expiresIn: expiresIn});        
+            var expiresIn = req.body.remember?'356d':'24h'; 
+            var authToken = jwt.sign(payload, jwt_secret, {expiresIn: expiresIn});        
         
-            response.cookie('login_token', login_token);
-            // response.cookie('current_user', JSON.stringify(payload));
-            response.cookie('realname', _user[0].realname);
+            res.cookie('authtoken', authToken);
+            res.cookie('realname', _user[0].realname);
 
-            response.json({success: true});
+            res.json({success: true , token:authToken , realname:_user[0].realname , username:_user[0].username});
         
         }else{
-            response.cookie('login_token', '');
-            // response.cookie('current_user', JSON.stringify(payload));
-            response.cookie('realname', '');
+            res.cookie('authtoken', '');
+            // res.cookie('current_user', JSON.stringify(payload));
+            res.cookie('realname', '');
 
-            response.status(401).json({success:false});
+            res.status(401).json({success:false , message:'username or password is not correct'});
         }
         
     } catch (error) {
         console.log(116,error.message);
-        response.status(500).json(error.message);
+        res.status(500).json(error.message);
     }
 });
 
-// logout 
-router.get('/api/logout',async(request,response)=>{
-    response.cookie('login_token', '');
-    // response.cookie('current_user', JSON.stringify(payload));
-    response.cookie('realname', '');
-    response.json({success: true});
+// /api/logout 
+router.get('/logout',async(req,res)=>{
+    res.cookie('authtoken', '');
+    // res.cookie('current_user', JSON.stringify(payload));
+    res.cookie('realname', '');
+    res.json({success: true});
 });
 
 
@@ -173,22 +126,16 @@ router.get('/api/logout',async(request,response)=>{
 ╚█████╔╝╚███╔███╔╝   ██║       ██║     ██║  ██║╚██████╔╝   ██║   ███████╗╚██████╗   ██║   
  ╚════╝  ╚══╝╚══╝    ╚═╝       ╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝ ╚═════╝   ╚═╝   */
 
-function isAuthenticated(request) {
-    // token name is : login_token , it can be change to authToken to meet the standard patterns 
-
-    // todo : 
-    // token can be pass in 
-    // [X] form-body 
-    // [X] json post 
-    // [] header 
-    // [] cookie
-
-    if (request.cookies.login_token) {
+function isAuthenticated(req) {
+    // access-token name is : authtoken in header or cookies 
+    var token =  req.headers.authtoken || req.cookies.authtoken; 
+    if (token) {
         try {
-            var login_token = jwt.verify(request.cookies.login_token, jwt_secret);
-            // console.log('login_token' , login_token);
-            request.userid = login_token.userid;
-            request.username = login_token.username;
+            var authToken = jwt.verify(token, jwt_secret);
+            // console.log('authtoken' , authToken);
+            req.userid = authToken.userid; // put userid and username in req object 
+            req.username = authToken.username;
+            req.realname = authToken.realname;
             return true;
         } catch (error) {
             console.log(error.message);
@@ -199,15 +146,20 @@ function isAuthenticated(request) {
     }
 };
 
-router.use(function (request, response, next) {
-    if (isAuthenticated(request)) {
+router.use(function (req, res, next) {
+    if (isAuthenticated(req)) {
         next(); //allow the next api(s)
     } else {
-        response.status(401).json({success: false,message: 'invalid access token'});
+        res.status(401).json({success: false,message: 'invalid access token'});
     }
 });
 
 // other routes need a valid jwt token 
+
+router.get('/checkToken',(req,res)=>{
+    res.json({success:true , message:'authToken is valid' , username:req.username , userid:req.userid});
+});
+
 
 // the routes could be setau as :
 // /api/v1/public  -> for public/free routes 
@@ -216,11 +168,12 @@ router.use(function (request, response, next) {
 // the api-key validation and authToken validation must be moved in thir modules 
 
 
+
 ////////////////////////////////////////////////////////////////////
 // trap invalid endpoints 
 ////////////////////////////////////////////////////////////////////
-router.route('*').all((request, response, next) => {
-    response.json({
+router.route('*').all((req, res, next) => {
+    res.json({
         success: false,
         error: 'invalid endpoint'
     });

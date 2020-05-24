@@ -1,0 +1,94 @@
+to create a migration : 
+knex migrate:make migration_name
+
+example : 
+knex migrate:make tbl_users
+
+in migration file create migration script like this : 
+
+    exports.up = function(knex) {
+        return knex.schema.createTable('tbl_users',(table)=>{
+            table.increments('userid');
+            table.string('username');
+            table.string('password');
+            table.string('realname');
+            table.string('email');
+            table.string('cellphone');
+            table.boolean('isactive');   
+            table.timestamp('created_at').defaultTo(knex.fn.now()); 
+            table.timestamp('updated_at').defaultTo(knex.fn.now());  
+        });  
+    };
+
+    exports.down = function(knex) {
+        return knex.schema.dropTable('tbl_users'); 
+    };
+
+then create seed files in /seed directory 
+    knex seed:make 001_seed_users
+
+001_seed_users.js
+
+and create seed script like : 
+
+exports.seed = function (knex) {
+  // Deletes ALL existing entries
+  return knex('tbl_users').del()
+    .then(function () {
+      // Inserts seed entries
+      return knex('tbl_users').insert([{
+        userid: 1,
+        username: 'admin',
+        password: '123',
+        realname: 'مدیر سیستم',
+        email: 'azolfaghar@gmail.com',
+        cellphone: '09121268912' , 
+        isactive:true
+      }]);
+    });
+};
+
+
+to apply migration :
+    knex migrate:latest
+
+to apply seed : 
+    knex seed:run
+
+
+Adding/Dropping Columns
+    
+    knex migrate:make add_fullname_to_users
+
+    exports.up = function(knex, Promise) {
+    knex.schema.table('users', function(table) {
+        table.integer('fullname').notNull()
+    })
+    }
+
+    exports.down = function(knex, Promise) {
+    knex.schema.table('users', function(table) {
+        table.dropColumn('fullname')
+    })
+    }
+
+
+
+
+
+exports.up = function(knex, Promise) {
+  return knex.schema.createTable('tasks', function(table) {
+    table.increments();
+    table.string('title').notNullable();
+    table.string('description').notNullable();
+    table.boolean('is_complete').notNullable().defaultTo(false);
+    table.integer('user_id').references('id').inTable('users');
+    table.timestamp('created_at').defaultTo(knex.fn.now());
+    table.timestamp('updated_at').defaultTo(knex.fn.now());
+  })
+}
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTable('tasks');
+}
+

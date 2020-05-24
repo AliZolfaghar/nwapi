@@ -1,0 +1,33 @@
+﻿<div class="row justify-content-center">
+    <div class="col-sm-8 col-md-6 col-lg-6 col-xl-4 " >
+        <div class="card">
+            <div class="card-header text-center bg-primary text-white" >
+                ورود به سامانه
+            </div>
+
+            <div class="card-body">
+                
+                <div class="form-group">
+                    <input id="username" type="text" ng-model="data.username" class="form-control text-center" placeholder="نام کاربری">
+                </div>                
+                
+                <div class="form-group">
+                    <input id="password" type="password" ng-model="data.password" class="form-control text-center" placeholder="کلمه عبور">
+                </div>
+                
+                <div class="form-group text-right">
+                    <label>
+                        ورود اتوماتیک به سامانه
+                        <input id="remember" type="checkbox" ng-model="data.remember" class="checkbox">
+                    </label>
+                </div>
+
+                <div class="form-group justify-content-center">
+                    <input type="button" value="ورود به سیستم" class="btn btn-block btn-success btn-raised" ng-click="login()" />
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+

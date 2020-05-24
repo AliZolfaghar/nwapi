@@ -1,0 +1,483 @@
+﻿@font-face {
+    font-family: iransans;
+    src: url('IRANSans(FaNum).ttf');
+}
+
+html { overflow-y: scroll; }
+
+
+body {
+    background-color:whitesmoke;
+    font-family:iransans;
+    padding-right: 0px !important;   
+}
+
+.az-title{
+    
+}
+
+.az-label{
+    right:0px;
+}
+
+.rtl{
+    direction:rtl !important; 
+    text-align:right !important ; 
+}
+
+.ltr{
+    direction : ltr !important ; 
+}
+
+.fit{
+    width:1%;
+    white-space:nowrap;
+}
+
+#currentUserMenu{
+    margin-right:0px !important;
+    margin-left : 10px !important;
+}
+
+textarea{
+    line-height:2 !important;
+}
+
+.az-modal-header{
+    padding-top : 10px !important; 
+    padding-bottom:10px !important; 
+}
+
+
+/* some btns */
+.btn.bg-purple{
+    background-color: #7E57C2 !important;
+    color:white !important;
+}
+
+    .btn.bg-purple:hover {
+        background-color: #9575CD !important;
+        color: white !important;
+    }
+
+    .btn.bg-purple.active {
+        background-color: #4527A0 !important;
+        color: white !important;
+        
+    }
+
+
+.removeIcon{
+    display:none !important;
+}
+
+.ADMdtpInput{
+    direction:ltr !important;
+}
+
+
+/*some animation */
+.anim {
+    transition:0.3s linear all ;
+}
+
+@keyframes fadeup{
+    0% {
+        opacity: 0;
+        transform:translateY(30px) ; 
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.fadeup{
+    animation:fadeup 0.3s linear;
+}
+
+
+
+
+/*azloading speener*/
+
+/* Absolute Center Spinner */
+.azloading {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+/* Transparent Overlay */
+.azloading:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.azloading:not(:required) {
+  /* hide "azloading..." text */
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+
+.azloading:not(:required):after {
+  content: '';
+  display: block;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  margin-top: -0.5em;
+  -webkit-animation: spinner 1500ms infinite linear;
+  -moz-animation: spinner 1500ms infinite linear;
+  -ms-animation: spinner 1500ms infinite linear;
+  -o-animation: spinner 1500ms infinite linear;
+  animation: spinner 1500ms infinite linear;
+  border-radius: 0.5em;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+  box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+
+/*azloading speener*/
+
+
+
+/*loader-5*/
+
+/* [class*="loader-"] {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    color: inherit;
+    vertical-align: middle;
+    pointer-events: none;
+}
+
+
+.loader-05 {
+    border: .2em solid transparent;
+    border-top-color: currentcolor;
+    border-radius: 50%;
+    -webkit-animation: 1s loader-05 linear infinite;
+    animation: 1s loader-05 linear infinite;
+    position: relative;
+}
+
+    .loader-05:before {
+        content: '';
+        display: block;
+        width: inherit;
+        height: inherit;
+        position: absolute;
+        top: -.2em;
+        left: -.2em;
+        border: .2em solid currentcolor;
+        border-radius: 50%;
+        opacity: .5;
+    }
+
+@-webkit-keyframes loader-05 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loader-05 {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+} */
+
+
+
+/*loader-5*/
+
+
+/* loader -border */
+/* 
+.loader {
+    color: #fff;
+    position: fixed;
+    box-sizing: border-box;
+    left: -9999px;
+    top: -9999px;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    z-index: 999999
+}
+
+.loader:after, .loader:before {
+        box-sizing: border-box;
+        display: none
+    }
+
+.loader.is-active {
+        background-color: rgba(0,0,0,.85);
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0
+    }
+
+.loader.is-active:after, .loader.is-active:before {
+            display: block
+        }
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0)
+    }
+
+    to {
+        transform: rotate(359deg)
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: .5
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+.loader[data-text]:before {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    color: currentColor;
+    font-family: Helvetica,Arial,sans-serif;
+    text-align: center;
+    width: 100%;
+    font-size: 14px
+}
+
+.loader[data-text=""]:before {
+    content: "Loading"
+}
+
+.loader[data-text]:not([data-text=""]):before {
+    content: attr(data-text)
+}
+
+.loader[data-text][data-blink]:before {
+    animation: blink 1s linear infinite alternate
+}
+
+@keyframes corners {
+    6% {
+        width: 60px;
+        height: 15px
+    }
+
+    25% {
+        width: 15px;
+        height: 15px;
+        left: calc(100% - 15px);
+        top: 0
+    }
+
+    31% {
+        height: 60px
+    }
+
+    50% {
+        height: 15px;
+        top: calc(100% - 15px);
+        left: calc(100% - 15px)
+    }
+
+    56% {
+        width: 60px
+    }
+
+    75% {
+        width: 15px;
+        left: 0;
+        top: calc(100% - 15px)
+    }
+
+    81% {
+        height: 60px
+    }
+}
+
+.loader-border[data-text]:before {
+    color: #fff
+}
+
+.loader-border:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15px;
+    height: 15px;
+    background-color: #ff0;
+    animation: corners 3s ease both infinite
+} */
+
+/* loader -border */
+
+
+
+/* selected actions checkbox highlite */
+:checked+span {
+    color: blue;
+    font-weight: bold;
+}
+
+.actionItem{
+    display: inline;
+}
+
+.date-time-error{
+    background-color : rgba(255,205,210 ,1) !important;
+}
+
+tr.date-time-error:hover{
+    background-color : rgb(252, 191, 197) !important;
+}
+
+
+.chart-ph{
+    transition: all .35s ease-in;
+}
+
+
+.border-1 {
+    border:solid 1px lightgray;
+}
+
+.hand {
+    cursor: pointer;
+}
+
+
+
+
+
+/* dropdown */  
+.custom-select option:before{
+    content: '&nbsp;&nbsp;';
+}
+/* .custom-select *{ */
+    /* padding-right: 5px; */
+/* } */
+
+
+
+.bg-whitesmoke{
+    background-color: whitesmoke;
+}
+
+.w1{
+    width: 1%;
+}
+
+.hover:hover{
+    background-color: whitesmoke;
+}
+
+.btn:disabled {
+    cursor: no-drop;
+}

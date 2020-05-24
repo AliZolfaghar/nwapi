@@ -1,0 +1,323 @@
+﻿<script src="/js/Chart.min.js"></script>
+
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-inline">
+            <div class="form-group">
+                <span class="fa fa-clipboard-list"></span>
+                <!-- reason : {{rejectReason}} //  -->
+                گزارش عملکرد :&nbsp;&nbsp;
+                <select class="form-control" ng-model="selectedUser"
+                    ng-options="e.username as '&nbsp;&nbsp;' + e.realname for e in employees" class="form-control"
+                    ng-change="getWorks()"></select>
+                <span ng-show="mode=='table'">
+                    &nbsp;&nbsp;روز : &nbsp;&nbsp;
+                    <select ng-model="day" class="form-control" ng-change="filteByDay()">
+                        <option value="00">&nbsp;&nbsp;همه</option>
+                        <option value="01">&nbsp;&nbsp;1</option>
+                        <option value="02">&nbsp;&nbsp;2</option>
+                        <option value="03">&nbsp;&nbsp;3</option>
+                        <option value="04">&nbsp;&nbsp;4</option>
+                        <option value="05">&nbsp;&nbsp;5</option>
+                        <option value="06">&nbsp;&nbsp;6</option>
+                        <option value="07">&nbsp;&nbsp;7</option>
+                        <option value="08">&nbsp;&nbsp;8</option>
+                        <option value="09">&nbsp;&nbsp;9</option>
+                        <option value="10">&nbsp;&nbsp;10</option>
+                        <option value="11">&nbsp;&nbsp;11</option>
+                        <option value="12">&nbsp;&nbsp;12</option>
+                        <option value="13">&nbsp;&nbsp;13</option>
+                        <option value="14">&nbsp;&nbsp;14</option>
+                        <option value="15">&nbsp;&nbsp;15</option>
+                        <option value="16">&nbsp;&nbsp;16</option>
+                        <option value="17">&nbsp;&nbsp;17</option>
+                        <option value="18">&nbsp;&nbsp;18</option>
+                        <option value="19">&nbsp;&nbsp;19</option>
+                        <option value="20">&nbsp;&nbsp;20</option>
+                        <option value="21">&nbsp;&nbsp;21</option>
+                        <option value="22">&nbsp;&nbsp;22</option>
+                        <option value="23">&nbsp;&nbsp;23</option>
+                        <option value="24">&nbsp;&nbsp;24</option>
+                        <option value="25">&nbsp;&nbsp;25</option>
+                        <option value="26">&nbsp;&nbsp;26</option>
+                        <option value="27">&nbsp;&nbsp;27</option>
+                        <option value="28">&nbsp;&nbsp;28</option>
+                        <option value="29">&nbsp;&nbsp;29</option>
+                        <option value="30">&nbsp;&nbsp;30</option>
+                        <option value="31">&nbsp;&nbsp;31</option>
+                    </select>
+                </span>
+                &nbsp;&nbsp;ماه :&nbsp;&nbsp;
+                <select ng-model="month" class="form-control" ng-change="getWorks()">
+                    <option value="01">&nbsp;&nbsp;1</option>
+                    <option value="02">&nbsp;&nbsp;2</option>
+                    <option value="03">&nbsp;&nbsp;3</option>
+                    <option value="04">&nbsp;&nbsp;4</option>
+                    <option value="05">&nbsp;&nbsp;5</option>
+                    <option value="06">&nbsp;&nbsp;6</option>
+                    <option value="07">&nbsp;&nbsp;7</option>
+                    <option value="08">&nbsp;&nbsp;8</option>
+                    <option value="09">&nbsp;&nbsp;9</option>
+                    <option value="10">&nbsp;&nbsp;10</option>
+                    <option value="11">&nbsp;&nbsp;11</option>
+                    <option value="12">&nbsp;&nbsp;12</option>
+                    <option value="00">&nbsp;&nbsp;همه</option>
+                </select>
+                &nbsp;&nbsp; سال : &nbsp;&nbsp;
+                <input type="text" class="form-control" ng-model="year" style="width: 100px;">
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <span class="pull-left">
+                    ارزش کار انجام شده : {{commafy(totalSum)}} ریال <br>
+                    تعداد کار انجام شده : {{commafy(totalCount)}}
+                </span>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button title="نمایش به صورت جدولی" ng-click="mode='table'" type="button" class="btn btn-primary"
+                    ng-show="mode=='chart'">
+                    <span class="fa fa-table fa-2x"></span>
+                </button>
+                <button title="نمایش به صورت نموداری" ng-click="mode='chart'" type="button" class="btn btn-primary"
+                    ng-show="mode=='table'">
+                    <span class="fa fa-chart-pie fa-2x"></span>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- charts -->
+<div ng-show="mode=='chart'">
+    <div class="row justify-content-center">
+        <div class="col-4 chart-ph" id="ph_1">
+            <a href="" ng-click="chartOptions.priceType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.priceType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.priceType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="priceChartCanvas" ng-click="toggleZoom('ph_1')"></canvas>
+        </div>
+        <div class="col-4 chart-ph" id="ph_2">
+            <a href="" ng-click="chartOptions.countType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.countType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.countType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="countChartCanvas" ng-click="toggleZoom('ph_2')"></canvas>
+        </div>
+        <div class="col-4 chart-ph" id="ph_3">
+            <a href="" ng-click="chartOptions.timeType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.timeType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="chartOptions.timeType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="timeChartCanvas" ng-click="toggleZoom('ph_3')"></canvas>
+        </div>
+
+        <div class="col-4 chart-ph" id="ph_4">
+            <a href="" ng-click="catChartOptions.priceType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.priceType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.priceType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="catPriceChartCanvas" ng-click="toggleZoom('ph_4')"></canvas>
+        </div>
+
+        <div class="col-4 chart-ph" id="ph_5">
+            <a href="" ng-click="catChartOptions.countType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.countType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.countType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="catCountChartCanvas" ng-click="toggleZoom('ph_5')"></canvas>
+        </div>
+        <div class="col-4 chart-ph" id="ph_6">
+            <a href="" ng-click="catChartOptions.timeType='bar';renderChart();"><span
+                    class=" fa fa-chart-bar fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.timeType='line';renderChart();"><span
+                    class=" fa fa-chart-line fa-2x"></span></a>
+            <a href="" ng-click="catChartOptions.timeType='pie';renderChart();"><span
+                    class=" fa fa-chart-pie fa-2x"></span></a>
+            <canvas id="catTimeChartCanvas" ng-click="toggleZoom('ph_6')"></canvas>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <hr>
+    </div>
+</div>
+
+<div ng-show="mode=='table'">
+    <div class="row">
+        <div class="col-1 text-nowrap align-self-center">
+
+        </div>
+        <div class="col-5">
+            <div class="form-inline form-group">
+                <!-- {{employees}} -->
+                <!-- <select class="custom-select" ng-model="selectedUser" ng-options="employee for employee in employees" class="form-control" ng-change="getWorks()"></select>             -->
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="form-inline justify-content-end">
+                &nbsp;
+                <span class="fa fa-search-minus fa-1x btn-sm text-danger btn-light hand"
+                    ng-click="searchValue='';selectedCat = undefined"></span>
+                &nbsp;
+                <input ng-model="searchValue" placeholder="جستجو" class="form-control" ng-hide="selectedCat" />
+                <span ng-show="selectedCat">نمایش کارهای : ({{selectedCat}})</span>
+                &nbsp;
+                <button type="button" class="btn bg-primary text-light" ng-click="getWorks()">به روز رسانی لیست</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" ng-repeat="cat in arrCats" ng-click="filterCat(cat);">{{cat}}</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped table-hover">
+                <tr class="bg-primary text-light">
+                    <th>ردیف</th>
+                    <th>کاربر</th>
+                    <th>عنوان</th>
+                    <th>توضیحات</th>
+                    <th>شروع</th>
+                    <th class="hand" ng-click="order='enddate'; reverse=!reverse;">پایان
+                        <span ng-show="order=='enddate' && reverse==false" class="fa fa-sort-up"></span>
+                        <span ng-show="order=='enddate' && reverse==true" class="fa fa-sort-down"></span>
+                    </th>
+                    <th>وضعیت</th>
+                    <th>دسته بندی</th>
+                    <th class="hand" ng-click="order='timediff'; reverse=!reverse;">
+                        مدت انجام
+                        <span ng-show="order=='timediff' && reverse==false" class="fa fa-sort-up float-left"></span>
+                        <span ng-show="order=='timediff' && reverse==true" class="fa fa-sort-down float-left"></span>
+                    </th>
+                    <th>ارزش کار</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="w in data | filter:searchValue | orderBy:order:reverse" ng-class="checkOverlap(w)">
+                    <td title="">{{$index+1}}</td>
+                    <td>{{empName(w.owner)}}</td>
+                    <td title="{{w.owner}}">{{w.title}}</td>
+                    <td>{{w.detail}}</td>
+                    <td ng-dblclick="filterByDate(w.startdate)" ng-bind-html="w.startdate | brakeDash" class="hand">
+                    </td>
+                    <td ng-dblclick="filterByDate(w.enddate)" ng-bind-html="w.enddate | brakeDash" class="hand"></td>
+                    <td>{{w.state}}</td>
+                    <td>{{w.action}}<br>{{w.category}}</td>
+                    <td title="{{w.timediff}}">{{calcTimeElapsed(w.timediff)}}</td>
+                    <td>{{commafy(w.totalprice)}}
+                        {{calcSum($index,w.totalprice)}}
+                    </td>
+                    <td>
+                        <button ng-hide="w.rejected" type="button" ng-click="rejectThis(w)" class="btn btn-sm" title="عدم پذیرش">
+                            <span  class="fa fa-2x fa-thumbs-down text-danger" style="font-size:1.5em;"></span>
+                        </button>
+                        <span ng-show="w.rejected" class="fa fa-2x fa-ban text-danger" style="font-size:1.5em;"></span>
+                    </td>
+                </tr>
+                <tr class="bg-primary text-white">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-left" colspan="2">
+                        جمع لیست : <br>
+                        جمع کل :
+                    </td>
+                    <td colspan="2">
+                        {{commafy(filterSum)}} <br>
+                        {{commafy(totalSum)}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- reject modal -->
+<div class="modal fade" id="rejectModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header az-modal-header bg-whitesmoke">
+                عدم پذیرش
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                    style="padding-left: unset; margin-left: unset;">
+                    <spanaria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row p-md-3 ">
+                    <div class="col-12">
+                        {{rejectingWork.title}}<br>
+                        {{rejectingWork.detail}}
+                    </div>
+                </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <form name="reject_form">
+                        <div class="md-form input-group mb-3">
+                            <input type="text" class="form-control" ng-model="rejectComment" required
+                                placeholder="علت عدم پذیرش"></input>
+                            <div class="input-group-prepend" title="ذخیره در لیست" ng-click="toogle_save_comment()">
+                                <span ng-show="save_comment" class="far fa-2x fa-check-square text-success"></span>
+                                <span ng-hide="save_comment" class="far fa-2x fa-square text-danger"></span>
+                            </div>
+                        </div>
+                    </form>
+                        <br>
+
+                        <div style="height: 300px ; overflow: scroll;">
+                            <div class="row hover hand" ng-repeat="c in rejectComments track by $index">
+                                <div class="col-10" ng-click="select_c(c)">
+                                    {{c}}
+                                </div>
+                                <div class="col-1 w1 text-nowrap">
+                                    <span ng-click="remove_c(c)" class="fa fa-minus-circle fa-2x"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="input">
+
+                </div>
+
+                <div class="form-row d-none">
+                    comment : {{rejectComment}}
+                    <br>
+                    comments : {{rejectComments}}
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-danger" ng-disabled="reject_form.$invalid" ng-click="finishReject()">ثبت عدم
+                    پذیرش</button>
+            </div>
+        </div>
+    </div>
+</div>

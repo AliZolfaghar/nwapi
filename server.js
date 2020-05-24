@@ -69,9 +69,11 @@ app.use(cors());
 // setup morgan logger 
 // app.use(morgan('short'));
 
-// use api-router 
-var apiRouter = require('./apiRouter');
-app.use(apiRouter);
+// api with api-key protection -> /api/private/<api-name>
+app.use('/api/private',require('./apiPrivateRouter'));
+
+// use api-router -> /api/<api-name>
+app.use('/api',require('./apiRouter'));
 
 
 // // bind https server to express app and start to listen

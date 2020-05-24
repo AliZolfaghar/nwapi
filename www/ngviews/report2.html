@@ -1,0 +1,40 @@
+﻿<h4>
+    گزارش مدت کارکرد
+</h4>
+    
+<div class="form-inline form-group">
+    <input class="form-control" type="text" ng-model="from" placeholder="از تاریخ" /> &nbsp;
+    <input class="form-control" type="text" ng-model="to" placeholder="تا تاریخ" />
+    <label>انتخاب کاربر : </label> &nbsp;&nbsp;&nbsp;
+    <select ng-model="user" ng-options="item for item in users" class="form-control" ng-change="getWorks()">
+        <option value="" disabled selected>کاربر مورد نظر را انتخاب کنید</option>
+    </select>
+    <hr />
+
+    <div class="form-inline">
+        <input ng-model="searchValue" placeholder="جستجو" class="form-control" />
+        <button type="button" class="btn bg-primary text-light" ng-click="getWorks()">به روز رسانی لیست</button>
+    </div>
+
+
+        
+    <table class="table table-striped table-hover">
+        <tr class="bg-primary text-light">
+            <th>ردیف</th>
+            <th>عنوان</th>
+            <th>تاریخ</th>
+            <th>مدت زمان به دقیقه</th>
+            
+        </tr>
+        <tr ng-repeat="w in works| filter:searchValue" ng-click="render_me()">
+            <td>{{$index+1}}</td>
+            <td>{{w.category}}</td>
+            <td>{{w.sdate}}</td>
+            <td>{{commafy(w.MinDiff_Sum)}}</td>
+        </tr>
+    </table>
+
+    <hr />
+    <canvas id="myChart" width="400" height="100"></canvas>
+
+</div>
