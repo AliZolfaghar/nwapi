@@ -1,4 +1,3 @@
-
 exports.up = function(knex) {
     return knex.schema.createTable('tbl_users',(table)=>{
         table.increments('userid');
@@ -8,6 +7,7 @@ exports.up = function(knex) {
         table.string('email');
         table.string('cellphone');
         table.boolean('isactive');    
+        table.integer('roleid').references('roleid').inTable('tbl_roles');
       });  
 };
 

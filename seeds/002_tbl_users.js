@@ -10,7 +10,8 @@ exports.seed = function (knex) {
         realname: 'مدیر سیستم',
         email: 'azolfaghar@gmail.com',
         cellphone: '09121268912' , 
-        isactive:true
+        isactive:true,
+        roleid:1
       }]);
     });
 };

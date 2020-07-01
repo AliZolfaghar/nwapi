@@ -246,7 +246,6 @@ app.controller('rootCtrl',function($scope,$rootScope,svc){
 });
 
 
-
 app.controller('404Ctrl',function(){
     console.log('404-controller');
 });
