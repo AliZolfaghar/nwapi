@@ -32,6 +32,7 @@ app.run(function ($rootScope , $location, $interval, $http) {
             // goto login page 
             $location.path('/login');
         }
+        // todo handle no-access to page error , forbidden 
     }; // handle error 
 
 
@@ -39,7 +40,8 @@ app.run(function ($rootScope , $location, $interval, $http) {
 
 // app.config 
 app.config(['$routeProvider', '$locationProvider', 'ADMdtpProvider', function ($routeProvider, $locationProvider, ADMdtp , $rootScope,$ocLazyLoad) {
-    console.log('app.config')
+    console.log('app.config'); 
+    // config date picker 
     ADMdtp.setOptions({
         calType: 'jalali',
         format: 'YYYY/MM/DD - hh:mm',
@@ -150,8 +152,12 @@ app.service('svc', ['$rootScope', '$location', '$http', function ($rootScope, $l
     };
     
     this.currentUser = {}; 
+    this.refreshUser = function(){
+        $rootScope.realname = this.load('realname');
+        $rootScope.rolename = this.load('rolename');
+    }
 
-    // refresh user atate , if neede redirect to login 
+    // refresh user status , if neede redirect to login 
     this.refreshUserStatus = function (cb) {
         console.log('--------------------------');        
         console.log('refresh currwent user status');
@@ -180,6 +186,11 @@ app.service('svc', ['$rootScope', '$location', '$http', function ($rootScope, $l
     };
 
     function handleError(error){
+        if(error.status==401){
+            toastr.error("لطفا به سامانه وارد شوید");
+            return $location.path('/login');
+        }
+
         console.log(error);
         $rootScope.errors.push(error);
         toastr.error("خطای سیستم");
@@ -202,6 +213,11 @@ app.service('svc', ['$rootScope', '$location', '$http', function ($rootScope, $l
 
 }]);
 
+/**
+ * user roles and access control 
+ * 
+ */
+
 // app.controller('octestCtrl',function($scope,$ocLazyLoad){
 //     // console.log('try to oc-lazy-load module');
 //     // $ocLazyLoad.load('/ngControllers/octestCtrl.js');
@@ -215,6 +231,18 @@ app.filter('brakeDash',function($sce){
             return input ;  
         }
     };
+});
+
+// root controller to run at app start
+app.controller('rootCtrl',function($scope,$rootScope,svc){
+    console.log('rootCtrl');
+    // the next code block will run on every route-change
+    $scope.$on('$routeChangeStart', function(next, current){
+        //...do stuff here...
+        console.log('route-change');
+        // put realname and rolename in $rootScope
+        svc.refreshUser();
+    });
 });
 
 
@@ -245,6 +273,8 @@ function commafy (number) {
         return number;
     }
 }; // commafy 
+
+
 
 // var chart1;
 // function render_chart(divid, charttype, chartdata , caption) {
