@@ -87,6 +87,16 @@ app.config(['$routeProvider', '$locationProvider', 'ADMdtpProvider', function ($
             }
         })
 
+        .when('/manageUsers', {
+            templateUrl: 'ngviews/manageUsers.html',
+            controller: 'manageUsersCtrl',
+            resolve : {
+                deps : function($ocLazyLoad){
+                    return $ocLazyLoad.load('/ngControllers/manageUsersCtrl.js');
+                }                
+            }
+        })
+
 
 
         .when('/404', {

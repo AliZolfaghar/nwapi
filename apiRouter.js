@@ -126,6 +126,17 @@ router.get('/logout',async(req,res)=>{
 ╚█████╔╝╚███╔███╔╝   ██║       ██║     ██║  ██║╚██████╔╝   ██║   ███████╗╚██████╗   ██║   
  ╚════╝  ╚══╝╚══╝    ╚═╝       ╚═╝     ╚═╝  ╚═╝ ╚═════╝    ╚═╝   ╚══════╝ ╚═════╝   ╚═╝   */
 
+
+// need a valid authtoken in headers od cookies
+function requireAuthtoken(req, res, next) {
+    try {
+        var token = jwt.verify(req.headers.authtoken || req.cookies.authtoken, jwt_secret); // get token from header or cookie 
+        next();
+    } catch (error) {
+        res.status(401).json(error); // raise an unauthorized client http error 
+    }
+}
+
 function isAuthenticated(req) {
     // access-token name is : authtoken in header or cookies 
     var token =  req.headers.authtoken || req.cookies.authtoken; 
@@ -156,6 +167,11 @@ router.use(function (req, res, next) {
 
 // other routes need a valid jwt token 
 
+
+
+
+// router.route('/')
+
 router.get('/checkToken',(req,res)=>{
     res.json({success:true , message:'authToken is valid' , username:req.username , userid:req.userid});
 });
@@ -166,8 +182,6 @@ router.get('/checkToken',(req,res)=>{
 // /api/v1/private -> for api-key required apis 
 // /api/v1/secure  -> for auth requires apis 
 // the api-key validation and authToken validation must be moved in thir modules 
-
-
 
 ////////////////////////////////////////////////////////////////////
 // trap invalid endpoints 

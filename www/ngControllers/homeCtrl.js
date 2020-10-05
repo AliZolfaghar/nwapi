@@ -1,5 +1,5 @@
 angular.module("app").controller('homeCtrl', function ($scope, $rootScope, $http, svc, $location) {
-    console.log('home-Ctrl', $rootScope.currentUser);
+    console.log('homeCtrl', $rootScope.currentUser);
 
     // save last selected action in localStorage 
     $scope.rememberLastChoise = function(o){
